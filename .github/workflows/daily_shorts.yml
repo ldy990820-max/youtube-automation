@@ -33,11 +33,14 @@ jobs:
 
     - name: Run Automation Script
       env:
-        # We pass necessary API keys and secrets as environment variables.
         GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
         YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
         YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        FLOW_AI_COOKIE: ${{ secrets.FLOW_AI_COOKIE }} # Wait, Flow AI authentication cookie if needed
+        FLOW_AI_COOKIE: ${{ secrets.FLOW_AI_COOKIE }}
+        GCS_BUCKET_NAME: ${{ secrets.GCS_BUCKET_NAME }}
+        GOOGLE_APPLICATION_CREDENTIALS_JSON: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
       run: |
+        echo "$GOOGLE_APPLICATION_CREDENTIALS_JSON" > /tmp/gcp_key.json
+        export GOOGLE_APPLICATION_CREDENTIALS="/tmp/gcp_key.json"
         python main.py
